@@ -1,0 +1,26 @@
+// Uji cepat logika pembayaran: node test-pembayaran.js
+const assert = require('assert'), crypto = require('crypto');
+process.env.MIDTRANS_SERVER_KEY = 'SB-Mid-server-TEST';
+const p = require('./pembayaran');
+const sig = (o, a, g) => crypto.createHash('sha512').update(o + a + g + 'SB-Mid-server-TEST').digest('hex');
+const n = { order_id: 'KA-1', status_code: '200', gross_amount: '65000.00' }; n.signature_key = sig('KA-1', '200', '65000.00');
+assert(p.signatureValid(n), 'signature benar harus lolos');
+assert(!p.signatureValid({ ...n, gross_amount: '1.00' }), 'nominal diubah harus ditolak');
+assert(!p.signatureValid({ ...n, signature_key: 'x' }), 'signature salah harus ditolak');
+assert(!p.signatureValid({}), 'kosong harus ditolak');
+assert.equal(p.petaStatus({ transaction_status: 'settlement' }), 'berhasil');
+assert.equal(p.petaStatus({ transaction_status: 'capture', fraud_status: 'accept' }), 'berhasil');
+assert.equal(p.petaStatus({ transaction_status: 'capture', fraud_status: 'challenge' }), 'menunggu');
+assert.equal(p.petaStatus({ transaction_status: 'pending' }), 'menunggu');
+assert.equal(p.petaStatus({ transaction_status: 'expire' }), 'kedaluwarsa');
+['deny', 'cancel', 'failure'].forEach(s => assert.equal(p.petaStatus({ transaction_status: s }), 'gagal'));
+assert.equal(p.hitungKembalian(60000, 100000), 40000);
+assert.equal(p.hitungKembalian(60000, 60000), 0);
+assert.throws(() => p.hitungKembalian(60000, 50000), /kurang/);
+assert.equal(p.totalOnline(75000), 75000);
+process.env.BAYAR_ONLINE_PERSEN = '50'; assert.equal(p.totalOnline(75000), 37500); delete process.env.BAYAR_ONLINE_PERSEN;
+const csv = p.csvRekap([{ kode_order: 'A', kode_booking: 'KA-1', created_at: '2026-11-17 10:00:00', nama_pelanggan: '=HYPERLINK("x")', layanan: 'Cukur; styling', metode: 'tunai', total: 50000, uang_diterima: 100000, kembalian: 50000, status: 'berhasil' }]);
+assert(csv.startsWith('﻿Kode order;'), 'BOM + header');
+assert(csv.includes("'=HYPERLINK"), 'formula injection dinetralkan');
+assert(csv.includes('"Cukur; styling"'), 'titik koma di-quote');
+console.log('Semua uji pembayaran lulus.');

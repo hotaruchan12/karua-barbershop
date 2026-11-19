@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESC}}">
+<link rel="canonical" href="{{URL}}">
+<meta property="og:title" content="{{TITLE}}"><meta property="og:description" content="{{DESC}}">
+<meta property="og:type" content="website"><meta property="og:url" content="{{URL}}">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HairSalon","name":"Karua Barbershop","address":{"@type":"PostalAddress","streetAddress":"Jl. Sultan Alauddin 2 No. 5","addressLocality":"Makassar","addressCountry":"ID"},"openingHours":"Mo-Su 10:00-22:00"}</script>
+</head>
+<body>
+<header class="top">
+  <a href="/" data-l class="logo">KARUA <span>AREUM</span></a>
+  <button class="burger" data-act="menu" aria-label="Menu">☰</button>
+  <nav id="nav">
+    <a href="/" data-l>Beranda</a><a href="/layanan" data-l>Harga &amp; Promo</a><a href="/galeri" data-l>Galeri</a>
+    <a href="/capster" data-l>Capster</a><a href="/coba-model" data-l>Coba Model</a><a href="/virtual-tryon" data-l>AI Try-On</a><a href="/booking" data-l>Booking</a>
+    <span id="auth"></span>
+  </nav>
+</header>
+<main id="app"></main>
+<div class="float"><a id="fwa" target="_blank" rel="noopener" class="wa">WhatsApp</a><a id="fmap" target="_blank" rel="noopener" class="map">Lokasi</a></div>
+<footer id="foot"></footer>
+<div id="toast"></div>
+<script src="/app.js" defer></script>
+</body>
+</html>

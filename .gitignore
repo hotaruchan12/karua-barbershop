@@ -1,0 +1,15 @@
+node_modules/
+.env
+*.db
+*.db-shm
+*.db-wal
+storage/
+.DS_Store
+node_modules/
+.env
+.env.*
+!.env.example
+storage/
+public/uploads/
+*.log
+*.tar.gz
